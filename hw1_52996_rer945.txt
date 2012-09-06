@@ -1,0 +1,22 @@
+Homework #: 1
+Student Name: Robert Reed
+EID: rer945
+CS login: robby35u
+Email address: callmeelasinthe@gmail.com
+Unique Number: 52996
+
+1. Loader
+
+2. In general, the proccessor shouldn't just give the program over to a process indefinately. Even when a processs is expected to be short-lived, it is hard, even for most programs to guarantee this performance, especially for a general-purpose computer. A "locked-up" computer can be incredibly frustrating and the back-log of waiting programs can become very difficult to manage. As for scheduling tasks based on the amount of work, I wouldn't really feel that prioritizing tasks based on work amount would be appropriate in it's own right. However, the need for the number of processes to be decreased makes the shorter processes a priority. That being said, "shortest" is a relative term, so there does need to be some system to switch from process to process. I don't know really know how to handle the memory problem. Reading/writing to disk doesn't seem to be the best situation, but since context-switching on a uniprocessor system takes so long already, there may be a pre-imptive solution for this.
+
+3. If the operating system is doing the context switching thing, then most of the fault isolation handling can be taken care of by the os. The minimal hardware requirement would likely be an error flag register. Of course, the hw would still need to handle time-based interupts as well. As for , I don't see why the context switching process couldn't handle the memory protection. But the os would have to take control of many operations. For instance, if we are seperating which memory the program can write to, then either the hw would have to restrict the program(less appealing idea, due to hw, sw coupling, lack of flexibility in block sizes, etc) or the os should. At a minimum, the process should never be allowed to directly take control of resources that the other process is using. The os would have to context switch to itself and field these request are have some other way the restrict the process. Abstractions like "virtual memory" can help alot in this matter.
+
+4. A program is a file. An executable is a compiled program, ready to run. A process is a running program, i.e a program plus state.
+
+5. Exceptions are user process errors, like performing illeal action(os restricted actions), or attemptin impossible actions (dividing by zero); interrupts are hardware demands for the OS's attention, by definition they halt the currently running process and lead the operating system to context switch back to itself so it can deal with the issue; System calls are user process requests for the operating system to take care of a given tasks( usally one it can't handle on it's own). 
+
+6. 32
+
+7. Had difficulty getting program to work. Ran out of time. I read that a context switch can take as many as 20,000 cycles, yet multiple instructions can be processed per cycle on modern hardware. Thus, I would expect the difference to be several orders of magnitude. As for the work each has to do, the regular procedure calls have direct control over the hardware, particularly, registers and the cpu. The context switching is the majority of the work for a system call, although some operations themselves can take a long time (writing to disk, for example).
+
+8. The hardware sends the interupt signal to the os, so the return would likely tell the hardware to go back to it's state before the interupt was initiated, thus removing the interupt flags and the like. Potentially, the os could use this call everytime it is done handling an interupt. Alternatively, the iret command might be used for interupt masking (i.e. the os is not ready to deal with that problem). If an application where to execute this instructions, I would expect that and exception would be thrown and the os would take control long enough to deal with the problem(possibly never going back to the program).
